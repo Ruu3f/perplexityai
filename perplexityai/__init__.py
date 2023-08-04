@@ -56,47 +56,6 @@ class Completion:
                     self.websocket.close()
                 self.connect_websocket()
 
-        def init_websocket(timeout=5):
-            if self.is_websocket_connected:
-                return
-            if self.is_websocket_connecting:
-                while not self.is_websocket_connected:
-                    sleep(0.01)
-                return
-            self.is_websocket_connecting = True
-            self.is_websocket_connected = False
-
-            ws_url = f"wss://www.perplexity.ai/socket.io/?EIO=4&transport=websocket&sid={self.sid}"
-
-            cookie = ""
-            for key, value in self.session.cookies.get_dict().items():
-                cookie += f"{key}={value}; "
-
-            self.websocket = WebSocketApp(
-                url=ws_url,
-                header={"User-Agent": ""},
-                cookie=cookie,
-                on_open=lambda ws: on_websocket_connect(ws),
-                on_message=on_message,
-                on_error=lambda ws, error: on_websocket_error(error),
-                on_close=lambda ws: on_websocket_close(ws),
-            )
-            websocket_thread = Thread(target=self.websocket.run_forever)
-            websocket_thread.daemon = True
-            websocket_thread.start()
-
-            timer = 0
-            while not self.is_websocket_connected:
-                sleep(0.01)
-                timer += 0.01
-                if timer > timeout:
-                    self.is_websocket_connecting = False
-                    self.is_websocket_connected = False
-                    self.websocket.close()
-                    raise RuntimeError(
-                        "Timed out waiting for the websocket to connect."
-                    )
-
         def on_websocket_connect(ws):
             self.is_websocket_connecting = False
             self.is_websocket_connected = True
@@ -131,12 +90,15 @@ class Completion:
             headers={"User-Agent": ""},
         )
         self.t = format(getrandbits(32), "08x")
-        self.sid = loads(
-            self.session.get(
-                url=f"https://www.perplexity.ai/socket.io/?EIO=4&transport=polling&t={self.t}",
-                headers={"User-Agent": ""},
-            ).text[1:]
-        )["sid"]
+        try:
+            self.sid = loads(
+                self.session.get(
+                    url=f"https://www.perplexity.ai/socket.io/?EIO=4&transport=polling&t={self.t}",
+                    headers={"User-Agent": ""},
+                ).text[1:]
+            )["sid"]
+        except:
+            raise Exception("Unable to fetch the response.")
         self.frontend_uuid = str(uuid4())
         self.frontend_session_id = str(uuid4())
 
@@ -146,11 +108,48 @@ class Completion:
             headers={"User-Agent": ""},
         ).text, "Failed to ask anonymous user"
         self.websocket = None
-        init_websocket()
+        if self.is_websocket_connected:
+            return
+        if self.is_websocket_connecting:
+            while not self.is_websocket_connected:
+                sleep(0.01)
+            return
+        self.is_websocket_connecting = True
+        self.is_websocket_connected = False
 
-        self.session.get(
-            url="https://www.perplexity.ai/api/auth/session", headers={"User-Agent": ""}
+        cookie = ""
+        for key, value in self.session.cookies.get_dict().items():
+            cookie += f"{key}={value}; "
+
+        self.websocket = WebSocketApp(
+            url=f"wss://www.perplexity.ai/socket.io/?EIO=4&transport=websocket&sid={self.sid}",
+            header={"User-Agent": ""},
+            cookie=cookie,
+            on_open=lambda ws: on_websocket_connect(ws),
+            on_message=on_message,
+            on_error=lambda error: on_websocket_error(error),
+            on_close=lambda ws: on_websocket_close(ws),
         )
+        websocket_thread = Thread(target=self.websocket.run_forever)
+        websocket_thread.daemon = True
+        websocket_thread.start()
+
+        timer = 0
+        while not self.is_websocket_connected:
+            sleep(0.01)
+            timer += 0.01
+            if timer > 10:
+                self.is_websocket_connecting = False
+                self.is_websocket_connected = False
+                self.websocket.close()
+                raise RuntimeError("Timed out waiting for the websocket to connect.")
+        try:
+            self.session.get(
+                url="https://www.perplexity.ai/api/auth/session",
+                headers={"User-Agent": ""},
+            )
+        except:
+            raise Exception("Unable to fetch the response.")
 
         sleep(1)
 
@@ -166,7 +165,7 @@ class Completion:
                     "frontend_session_id": self.frontend_session_id,
                     "search_focus": "internet",
                     "frontend_uuid": self.frontend_uuid,
-                    "web_search_images": True,
+                    "web_search_images": False,
                     "gpt4": False,
                 },
             ]
