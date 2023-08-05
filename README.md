@@ -16,7 +16,7 @@ Join my [Discord server](https://discord.gg/XH6pUGkwRr) for live chat, support, 
 
 ## Support this repository:
 - ⭐ **Star the project:** Star this repository. It means a lot to me! 💕
-- 🎉 **Join our Discord Server:** Try the bot and chat with others. [Join here](https://discord.gg/XH6pUGkwRr):
+- 🎉 **Join my Discord Server:** Try the bot and chat with others. [Join here](https://discord.gg/XH6pUGkwRr):
 
 [![DiscordWidget](https://discordapp.com/api/guilds/1120833966035976273/widget.png?style=banner2)](https://discord.gg/XH6pUGkwRr)
 
