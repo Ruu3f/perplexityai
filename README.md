@@ -18,7 +18,7 @@ Join my [Discord server](https://discord.com/invite/UxJZMUqbsb) for live chat, s
 - ⭐ **Star the project:** Star this repository. It means a lot to me! 💕
 - 🎉 **Join my Discord Server:** Chat with me and others. [Join here](https://discord.com/invite/UxJZMUqbsb):
 
-[![DiscordWidget](https://discordapp.com/api/guilds/1137347499414278204/widget.png?style=banner2)](https://discord.gg/XH6pUGkwRr)
+[![DiscordWidget](https://discordapp.com/api/guilds/1137347499414278204/widget.png?style=banner2)](https://discord.com/invite/UxJZMUqbsb)
 
 ## Example:
 
