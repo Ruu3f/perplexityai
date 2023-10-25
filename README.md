@@ -30,4 +30,4 @@ for a in Perplexity().generate_answer(prompt):
     print(f"🤖: {a['answer']}")
 ```
 
-*Thanks to [nathanrchn/perplexityai]("https://github.com/nathanrchn/perplexityai") for the original code.*
+*Thanks to [nathanrchn's perplexityai](https://github.com/nathanrchn/perplexityai) for the original code.*
