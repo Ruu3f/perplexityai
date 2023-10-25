@@ -5,20 +5,19 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="perplexityai",
-    version="1.0.1",
-    description="A better, simpler and faster version of nathanrchn's perplexityai.",
+    version="1.0.2",
+    description="A simple module to use Perplexity AI in Python.",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/Ruu3f/perplexityai",
     author="Ruu3f",
-    license="GPLv2",
+    license="GPLv3",
     keywords=[
         "artificial-intelligence",
-        "machine-learning",
-        "deep-learning",
         "perplexityai",
         "perplexity",
         "python",
+        "api",
         "ai",
     ],
     python_requires=">=3.6",
@@ -43,6 +42,5 @@ setup(
     ],
     project_urls={
         "Source": "https://github.com/Ruu3f/perplexityai",
-        "Discord": "https://discord.gg/XH6pUGkwRr",
     },
 )

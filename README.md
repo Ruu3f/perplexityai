@@ -4,7 +4,7 @@
 
 # perplexityai
 
-A better, simpler, and faster version of nathanrchn's PerplexityAI.
+A simple module to use Perplexity AI in Python.
 
 ## Get started:
 
@@ -23,19 +23,11 @@ Join my [Discord server](https://dsc.gg/devhub-rsgh) for live chat, support, or 
 ## Example:
 
 ```python
-import perplexityai
-from asyncio import run
+from perplexityai import Perplexity
 
-
-async def main():
-    while True:
-        prompt = input("👦: ")
-        try:
-            resp = await perplexityai.Completion().create(prompt)
-            print(f"🤖: {resp}")
-        except Exception as e:
-            print(f"🤖: {e}")
-
-
-run(main())
+prompt = input("👦: ")
+for a in Perplexity().generate_answer(prompt):
+    print(f"🤖: {a['answer']}")
 ```
+
+*Thanks to [nathanrchn/perplexityai]("https://github.com/nathanrchn/perplexityai") for the original code.*
