@@ -5,7 +5,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="perplexityai",
-    version="1.0.2",
+    version="1.0.4",
     description="A simple module to use Perplexity AI in Python.",
     long_description=README,
     long_description_content_type="text/markdown",
